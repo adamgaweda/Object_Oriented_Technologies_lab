@@ -1,0 +1,34 @@
+package pl.edu.agh.iisg.to.dao;
+
+import jakarta.persistence.PersistenceException;
+import org.hibernate.Session;
+import pl.edu.agh.iisg.to.model.Course;
+import pl.edu.agh.iisg.to.session.SessionService;
+
+import java.util.Optional;
+
+/** DAO kursu */
+public class CourseDao extends GenericDao<Course> {
+
+    public CourseDao(SessionService sessionService) {
+        super(sessionService, Course.class);
+    }
+
+    /** Tworzy kurs; duplikat nazwy (UNIQUE) -> wyjątek przy commit -> Optional.empty(). */
+    public Optional<Course> create(final String name) {
+        return save(new Course(name));
+    }
+
+    /** Wyszukanie po nazwie - wzorzec zapytania JPQL z parametrem nazwanym i obsługą PersistenceException. */
+    public Optional<Course> findByName(final String name) {
+        try {
+            Session session = currentSession();
+            return session.createQuery("SELECT c FROM Course c WHERE c.name = :name", Course.class)
+                    .setParameter("name", name)
+                    .uniqueResultOptional();
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+}

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Plik bazy SQLite używany przez testy; powstaje w katalogu roboczym projektu. -->
+        <property name="connection.url">jdbc:sqlite:orm-test.db</property>
+        <property name="connection.driver_class">org.sqlite.JDBC</property>
+        <!-- Od Hibernate 6 dialekt SQLite znajduje się w module hibernate-community-dialects. -->
+        <property name="dialect">org.hibernate.community.dialect.SQLiteDialect</property>
+        <property name="connection.username"></property>
+        <property name="connection.password"></property>
+
+        <!-- create-drop: schemat tworzony od zera przy budowie SessionFactory.
+             Każdy test w OrmTest tworzy nową instancję SessionService (JUnit tworzy nowy obiekt klasy
+             testowej dla każdej metody), więc każdy test startuje z pustą bazą. -->
+        <property name="hbm2ddl.auto">create-drop</property>
+        <!-- Logowanie SQL generowanego przez Hibernate - zgodnie z zaleceniem w instrukcji laboratorium. -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!-- Klasy encji, które Hibernate ma zmapować. Klasa bez @Entity na tej liście powoduje błąd przy starcie. -->
+        <mapping class="pl.edu.agh.iisg.to.model.Student"/>
+        <mapping class="pl.edu.agh.iisg.to.model.Course"/>
+        <mapping class="pl.edu.agh.iisg.to.model.Grade"/>
+    </session-factory>
+</hibernate-configuration>

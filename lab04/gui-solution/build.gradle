@@ -1,0 +1,50 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'pl.edu.agh.to2'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    // Uruchamiamy przez Gradle (task run): wtyczka JavaFX dokłada moduły JavaFX do classpath/module path.
+    mainClass = 'app.GalleryApp'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+javafx {
+    version = '25'
+    // controls ciągnie za sobą graphics i base; fxml - ładowanie widoku; swing - SwingFXUtils w PhotoSerializer.
+    // Modułów media i web projekt nie używa, więc nie ma ich na liście (kilkadziesiąt MB mniej do pobrania).
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
+}
+
+dependencies {
+    // RxJava 3 - strumień zdjęć z wyszukiwarki; RxJavaFX - scheduler wykonujący onNext na wątku JavaFX
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.7'
+    implementation 'org.pdfsam.rxjava3:rxjavafx:3.0.2'
+    // Jackson - parsowanie odpowiedzi Serper API (GoogleSearchDriver); jackson-core przychodzi transzytywnie
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
+    // Apache Tika - rozpoznanie typu pobranego pliku (czy to obraz i jaki format)
+    implementation 'org.apache.tika:tika-core:2.9.0'
+
+    // Testy modelu i serializera (bez okna, bez sieci) - wystarczy javafx.base, które wtyczka dokłada do testów
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events = ['passed', 'failed', 'skipped']
+        exceptionFormat = 'full'
+    }
+}

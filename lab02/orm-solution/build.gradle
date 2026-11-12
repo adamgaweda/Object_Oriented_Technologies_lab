@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'pl.edu.agh.iisg.to'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    // Kod korzysta m.in. ze Stream.toList() (Java 16+) i var; poziom 21 kompiluje się na każdym JDK >= 21 (również 25).
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+    mainClass = 'pl.edu.agh.iisg.to.Main'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events = ['passed', 'failed', 'skipped']
+        exceptionFormat = 'full'
+    }
+}
+
+dependencies {
+    // Sterownik JDBC dla SQLite - Hibernate używa go "pod spodem" do rozmowy z bazą.
+    implementation 'org.xerial:sqlite-jdbc:3.46.1.0'
+
+    // Hibernate ORM 6 - implementacja JPA 3.x (pakiet jakarta.persistence). Od wersji 6 groupId to org.hibernate.orm.
+    implementation 'org.hibernate.orm:hibernate-core:6.6.0.Final'
+    // Dialekt SQLite został w Hibernate 6 wydzielony z rdzenia do modułu "community dialects".
+    implementation 'org.hibernate.orm:hibernate-community-dialects:6.6.0.Final'
+
+    // JAXB - Hibernate potrzebuje go do parsowania pliku hibernate.cfg.xml (Java 11+ nie zawiera JAXB w JDK).
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
+
+    // JUnit 5 (Jupiter) - artefakt zbiorczy: API + silnik + parametryzowane testy.
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    // Gradle 9 wymaga jawnie launchera platformy JUnit na classpath testów.
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+    // sqlite-jdbc loguje przez SLF4J (slf4j-api przychodzi z nim transzytywnie); ten binding wycisza ostrzeżenie
+    // "No SLF4J providers were found". Hibernate loguje niezależnie, przez jboss-logging.
+    testImplementation 'org.slf4j:slf4j-log4j12:2.0.16'
+}
