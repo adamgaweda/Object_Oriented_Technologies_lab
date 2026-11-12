@@ -1,10 +1,12 @@
-# Compiled class files
-*.class
+# ==========================================
+# Gradle
+# ==========================================
+.gradle/
+**/.gradle/
+build/
+**/build/
 
-# Log files
-*.log
-
-# Package Files
+# Package Files (ignore jars, but preserve Gradle wrapper jar)
 *.jar
 *.war
 *.nar
@@ -12,48 +14,92 @@
 *.zip
 *.tar.gz
 *.rar
+!gradle/wrapper/gradle-wrapper.jar
+!**/gradle/wrapper/gradle-wrapper.jar
 
-# Virtual machine crash logs
+# ==========================================
+# Compiled Java Class Files & Binaries
+# ==========================================
+*.class
+out/
+**/out/
+bin/
+**/bin/
+target/
+**/target/
+dist/
+**/dist/
+
+# ==========================================
+# Database files (SQLite / H2 test databases)
+# ==========================================
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# ==========================================
+# Runtime generated files & photo caches
+# ==========================================
+photos/
+**/photos/
+
+# ==========================================
+# Logs & VM Dumps
+# ==========================================
+*.log
 hs_err_pid*
 replay_pid*
+*.hprof
 
-# Build and binary directories
-out/
-bin/
-build/
-target/
-dist/
-
-### IntelliJ IDEA ###
+# ==========================================
+# IntelliJ IDEA
+# ==========================================
 .idea/
+**/.idea/
+.run/
+**/.run/
 *.iml
+**/*.iml
 *.iws
 *.ipr
-!**/src/main/**/out/
-!**/src/test/**/out/
 .kotlin
 
-### Eclipse ###
+# ==========================================
+# Eclipse
+# ==========================================
 .apt_generated
 .classpath
 .factorypath
 .project
 .settings/
+**/.settings/
 .springBeans
 .sts4-cache
-!**/src/main/**/bin/
-!**/src/test/**/bin/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/nbdist/
-/.nb-gradle/
+# ==========================================
+# NetBeans
+# ==========================================
+nbproject/private/
+**/nbproject/private/
+nbbuild/
+**/nbbuild/
+nbdist/
+**/nbdist/
+.nb-gradle/
+**/.nb-gradle/
 
-### VS Code ###
+# ==========================================
+# VS Code
+# ==========================================
 .vscode/
+**/.vscode/
 
-### OS / Environment ###
+# ==========================================
+# OS / Environment Files
+# ==========================================
 .DS_Store
 Thumbs.db
 Desktop.ini
